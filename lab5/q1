@@ -1,0 +1,150 @@
+
+#include <iostream>
+using namespace st
+struct Node
+{
+    int d;
+    Node* n;
+};
+void beninging(Node*& h, int v);
+void end(Node*& h, int v);
+void after(Node* h, int t, int v);
+void insBef(Node*& h, int t, int v);
+void delbeninging(Node*& h);
+void delEnd(Node*& h);
+void delNode(Node*& h, int v);
+int search(Node* h, int v);
+void display(Node* h);
+int main()
+{
+    Node* head = nullptr;
+    int ch, v, t;
+    do
+    {
+        cout << "\n1.beninging 2.end 3.after 4.InsBef 5.Delbeninging 6.DelEnd 7.DelNode 8.Search 9.display 0.Exit\n";
+        cout << "Choice: ";
+        cin >> ch;
+        switch(ch)
+        {
+            case 1:
+                cout << "Val: "; cin >> v;
+                beninging(head,v);
+                break;
+            case 2:
+                cout << "Val: "; cin >> v;
+                end(head,v);
+                break;
+            case 3:
+                cout << "Target Val: "; cin >> t;
+                cout << "Val: "; cin >> v;
+                after(head,t,v);
+                break;
+            case 4:
+                cout << "Target Val: "; cin >> t;
+                cout << "Val: "; cin >> v;
+                insBef(head,t,v);
+                break;
+            case 5:
+                delbeninging(head);
+                break;
+            case 6:
+                delEnd(head);
+                break;
+            case 7:
+                cout << "Val: "; cin >> v;
+                delNode(head,v);
+                break;
+            case 8:
+                cout << "Val: "; cin >> v;
+                int pos;
+                pos = search(head,v);
+                if(pos==-1) cout << "Not Found\n";
+                else cout << "Pos: " << pos << "\n";
+                break;
+            case 10:
+                display(head);
+                break;
+        }
+    } 
+    while(ch!=0);
+    return 0;
+}
+void beninging(Node*& h, int v)
+{
+    Node* p = new Node{v,h};
+    h = p;
+}
+void end(Node*& h, int v)
+{
+    Node* p = new Node{v,nullptr};
+    if(!h) { h = p; return; }
+    Node* t = h;
+    while(t->n) t=t->n;
+    t->n = p;
+}
+void after(Node* h, int tval, int v)
+{
+    Node* t = h;
+    while(t && t->d!=tval) t=t->n;
+    if(!t) { cout << "Not Found\n"; return; }
+    Node* p = new Node{v,t->n};
+    t->n = p;
+}
+void insBef(Node*& h, int tval, int v)
+{
+    if(!h) return;
+    if(h->d==tval) { beninging(h,v); return; }
+    Node* t = h;
+    while(t->n && t->n->d!=tval) t=t->n;
+    if(!t->n) { cout << "Not Found\n"; return; }
+    Node* p = new Node{v,t->n};
+    t->n = p;
+}
+void delbeninging(Node*& h)
+{
+    if(!h) return;
+    Node* t = h;
+    h = h->n;
+    delete t;
+}
+
+void delEnd(Node*& h)
+{
+    if(!h) return;
+    if(!h->n) { delete h; h=nullptr; return; }
+    Node* t = h;
+    while(t->n->n) t=t->n;
+    delete t->n;
+    t->n = nullptr;
+}
+void delNode(Node*& h, int v)
+{
+    if(!h) return;
+    if(h->d==v) { delbeninging(h); return; }
+    Node* t = h;
+    while(t->n && t->n->d!=v) t=t->n;
+    if(!t->n) { cout << "Not Found\n"; return; }
+    Node* p = t->n;
+    t->n = t->n->n;
+    delete p;
+}
+int search(Node* h, int v)
+{
+    int pos=1;
+    while(h)
+    {
+        if(h->d==v) return pos;
+        h=h->n;
+        pos++;
+    }
+    return -1;
+}
+void display(Node* h)
+{
+    while(h)
+    {
+        cout << h->d << "->";
+        h=h->n;
+    }
+    cout << "NULL\n";
+}
