@@ -1,0 +1,65 @@
+
+#include <iostream>
+using namespace std;
+
+class Stack {
+    char arr[50];
+    int t;
+public:
+    Stack() : t(-1) {}
+    bool empty()
+    {
+        return t == -1;
+    }
+    char peek()
+    {
+        return (t >= 0) ? arr[t] : '\0';
+    }
+    void push(char c)
+    {
+        if (t < 49) arr[++t] = c;
+    }
+    void pop()
+    {
+        if (t >= 0) --t;
+    }
+};
+
+int applyOp(int a, int b, char op) {
+    if (op == '+')
+        return a + b;
+    if (op == '-')
+        return a - b;
+    if (op == '*')
+        return a * b;
+    if (op == '/')
+        return a / b;
+    if (op == '^')
+        return a^b;
+    return 0;
+}
+
+int main()
+{
+    Stack s;
+    char expr[50];
+    cout << "Enter postfix : ";
+    cin >> expr;
+
+    int vals[50], vt = -1;
+
+    for (int i = 0; expr[i] != '\0'; ++i)
+    {
+        char c = expr[i];
+        if (c >= '0' && c <= '9')
+            vals[++vt] = c - '0';
+        else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^')
+        {
+            int b = vals[vt--], a = vals[vt--];
+            int res = applyOp(a, b, c);
+            vals[++vt] = res;
+        }
+    }
+    cout << "Result: " << vals[vt] << endl;
+    return 0;
+}
