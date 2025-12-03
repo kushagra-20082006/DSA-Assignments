@@ -1,0 +1,15 @@
+
+
+void Stack::reverseString(string a)
+{
+    int len = a.length();
+    Stack s;
+
+    for (int i = 0; i < len; i++)
+        s.push(a[i]);
+    cout << "Reversed string: ";
+
+    for (int i = 0; i < len; i++)
+        cout << (char)s.arr[s.top--];
+    cout << endl;
+}
